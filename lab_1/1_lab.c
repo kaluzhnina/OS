@@ -6,12 +6,12 @@
 
 void end_exit_child()
 {
-    printf("atexit(): end of process child...\n");
+    printf("atexit():end of process child... PID : %d\n", getpid());
 }
 
 void end_exit_parent()
 {
-    printf("atexit(): end of process parent...\n");
+    printf("atexit(): end of process parent...PID : %d\n", getpid());
 }
 
 
