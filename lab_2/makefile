@@ -1,4 +1,4 @@
 all:
 	gcc 2_lab.c -o 2_lab
-clean:
-	-rm -f *.o
+	./2_lab
+	-rm 2_lab
