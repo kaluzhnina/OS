@@ -33,7 +33,7 @@ int main()
         case -1: 
             perror("fork");
             exit(EXIT_FAILURE);
-            break;
+        break;
 
         case 0:  
             printf("CHILD: PID -- %d, parent's PID -- %d\n", getpid(), getppid());
@@ -46,7 +46,7 @@ int main()
             printf("CHILD: Real time: %s", ctime(&tm)); 
             atexit(end_exit); 
             exit(EXIT_SUCCESS);
-            break; 
+        break; 
 
         default: 
             printf("PARENT: PID -- %d, child's PID -- %d\n", getpid(), pid);
@@ -57,7 +57,7 @@ int main()
             int child_exit_code = 0;                
             waitpid(pid, &child_exit_code, 0);
             atexit(end_exit);
-            break;
-        
+        break;    
     }
+    return 0;
 }
