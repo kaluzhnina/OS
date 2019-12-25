@@ -18,7 +18,7 @@ int main()
 
     int fildes[2];
     ssize_t nbytes;
-    int status;;
+    int status;
     
 
     status = pipe(fildes);
