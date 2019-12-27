@@ -24,6 +24,11 @@ int main()
 
     char *shm;
     key_t key = ftok(FILENAME, 1);
+     if (key == -1)
+    {
+        perror("ftok: no key!");
+        exit(EXIT_FAILURE);
+    }
     if((semid = semget(key, 1, 0666)) < 0)
     {
         perror("semid:can not get semaphore");

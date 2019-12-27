@@ -21,6 +21,11 @@ int main()
     struct sembuf sem_unlock = { 0, 1, 0};
 
     key_t key = ftok(FILENAME, 1);
+     if (key == -1)
+    {
+        perror("ftok: no key!");
+        exit(EXIT_FAILURE);
+    }
     if((semid = semget(key, 1, IPC_CREAT | 0666)) < 0)
     {
         perror("semid:can not get semaphore");
