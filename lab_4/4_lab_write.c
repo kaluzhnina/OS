@@ -14,7 +14,8 @@ int main()
 { 
     time_t tm; 
     int shmid;
-    char* shm, *s;
+    char *shm;
+    char *s;
 
     key_t key = ftok(FILENAME, 1);
     if (key == -1)
