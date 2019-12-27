@@ -17,6 +17,11 @@ int main()
     char* shm, *s;
 
     key_t key = ftok(FILENAME, 1);
+    if (key == -1)
+    {
+        perror("ftok: no key!");
+        exit(EXIT_FAILURE);
+    }
     if ((shmid = shmget(key, SHMSZ, IPC_CREAT | 0666)) < 0) 
     {
         perror("shmget");
