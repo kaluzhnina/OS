@@ -6,8 +6,9 @@
 #include <unistd.h>
 #include <time.h> 
 #include <string.h>
+#include <errno.h>
 
-#define SHMSZ 32
+#define SHMSZ 128
 #define FILENAME "fileshm"
 
 int main() 
@@ -17,18 +18,31 @@ int main()
     char *shm;
     char *s;
 
-    key_t key = ftok(FILENAME, 1);
+    key_t key = ftok(FILENAME, 2345);
     if (key == -1)
     {
         perror("ftok: no key!");
         exit(EXIT_FAILURE);
     }
-    if ((shmid = shmget(key, SHMSZ, IPC_CREAT | 0666)) < 0) 
+    if ((shmid = shmget(key, SHMSZ, IPC_CREAT| IPC_EXCL| 0666)) < 0) 
     {
-        perror("shmget");
-        exit(EXIT_FAILURE);
+        if (errno == EEXIST)
+        {
+            shmid = shmget(key, SHMSZ, 0);
+            if(shmid == -1)
+            {
+                perror("");
+                exit(1);
+            }
+        }else{
+            perror("shmget");
+            exit(EXIT_FAILURE);
+        }
     }
-    if ((shm = shmat(shmid, NULL, 0)) == (char *) -1) 
+
+    void* shmaddr;
+
+    if ((char*)(shmaddr = shmat(shmid, NULL, SHM_RND)) == (char*) -1) 
     {
         perror("shmat");
         exit(EXIT_FAILURE);
@@ -38,7 +52,7 @@ int main()
         tm = time(NULL);
         pid_t pid = getpid();
         sprintf(s, "%d", (int)pid);
-        sprintf(shm, "%s%s%s", ctime(&tm), "PID -- ", s);
+        sprintf((char*)shmaddr, "%s%s%s", ctime(&tm), "PID -- ", s);
         sleep(1);
     }
     shmdt(shm);

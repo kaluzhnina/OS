@@ -7,7 +7,7 @@
 #include <time.h> 
 #include <string.h>
 
-#define SHMSZ 32
+#define SHMSZ 128
 #define FILENAME "fileshm"
 
   
@@ -18,7 +18,8 @@ int main()
     int shmid;
 
     char *shm;
-    key_t key = ftok(FILENAME, 1);
+    sleep(1);
+    key_t key = ftok(FILENAME, 2345);
     if ((shmid = shmget(key, SHMSZ, 0666)) < 0) 
     {
         perror("shmget");
